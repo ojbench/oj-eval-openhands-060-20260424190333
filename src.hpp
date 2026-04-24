@@ -1,13 +1,13 @@
 
-#include &lt;vector&gt;
+#include <vector>
 
-template &lt;typename T&gt;
+template <typename T>
 struct Validator {
     T value;
     bool negate_next;
     bool result;
 
-    Validator(const T&amp; val) : value(val), negate_next(false), result(true) {}
+    Validator(const T& val) : value(val), negate_next(false), result(true) {}
 
     // Convert to bool for use in if statements
     operator bool() const {
@@ -15,17 +15,17 @@ struct Validator {
     }
 
     // Check if value equals target
-    Validator&amp; toBe(const T&amp; target) {
+    Validator& toBe(const T& target) {
         bool condition = (value == target);
         if (negate_next) condition = !condition;
-        result = result &amp;&amp; condition;
+        result = result && condition;
         return *this;
     }
 
     // Check if value is in vector
-    Validator&amp; toBeOneOf(const std::vector&lt;T&gt;&amp; vec) {
+    Validator& toBeOneOf(const std::vector<T>& vec) {
         bool found = false;
-        for (const auto&amp; item : vec) {
+        for (const auto& item : vec) {
             if (value == item) {
                 found = true;
                 break;
@@ -33,51 +33,51 @@ struct Validator {
         }
         bool condition = found;
         if (negate_next) condition = !condition;
-        result = result &amp;&amp; condition;
+        result = result && condition;
         return *this;
     }
 
     // Greater than or equal
-    Validator&amp; ge(const T&amp; target) {
-        bool condition = (value &gt;= target);
+    Validator& ge(const T& target) {
+        bool condition = (value >= target);
         if (negate_next) condition = !condition;
-        result = result &amp;&amp; condition;
+        result = result && condition;
         return *this;
     }
 
     // Less than or equal
-    Validator&amp; le(const T&amp; target) {
-        bool condition = (value &lt;= target);
+    Validator& le(const T& target) {
+        bool condition = (value <= target);
         if (negate_next) condition = !condition;
-        result = result &amp;&amp; condition;
+        result = result && condition;
         return *this;
     }
 
     // Greater than
-    Validator&amp; gt(const T&amp; target) {
-        bool condition = (value &gt; target);
+    Validator& gt(const T& target) {
+        bool condition = (value > target);
         if (negate_next) condition = !condition;
-        result = result &amp;&amp; condition;
+        result = result && condition;
         return *this;
     }
 
     // Less than
-    Validator&amp; lt(const T&amp; target) {
-        bool condition = (value &lt; target);
+    Validator& lt(const T& target) {
+        bool condition = (value < target);
         if (negate_next) condition = !condition;
-        result = result &amp;&amp; condition;
+        result = result && condition;
         return *this;
     }
 
     // Negate the following conditions
-    Validator&amp; Not() {
+    Validator& Not() {
         negate_next = !negate_next;
         return *this;
     }
 };
 
 // Main expect function
-template &lt;typename T&gt;
-Validator&lt;T&gt; expect(const T&amp; value) {
-    return Validator&lt;T&gt;(value);
+template <typename T>
+Validator<T> expect(const T& value) {
+    return Validator<T>(value);
 }

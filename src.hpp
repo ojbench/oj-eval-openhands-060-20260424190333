@@ -39,7 +39,8 @@ struct Validator {
 
     // Greater than or equal
     Validator& ge(const T& target) {
-        bool condition = (value >= target);
+        // a >= b is equivalent to !(a < b)
+        bool condition = !(value < target);
         if (negate_next) condition = !condition;
         result = result && condition;
         return *this;
@@ -47,7 +48,8 @@ struct Validator {
 
     // Less than or equal
     Validator& le(const T& target) {
-        bool condition = (value <= target);
+        // a <= b is equivalent to !(a > b), and a > b is equivalent to (b < a)
+        bool condition = !(target < value);
         if (negate_next) condition = !condition;
         result = result && condition;
         return *this;
@@ -55,7 +57,8 @@ struct Validator {
 
     // Greater than
     Validator& gt(const T& target) {
-        bool condition = (value > target);
+        // a > b is equivalent to (b < a)
+        bool condition = (target < value);
         if (negate_next) condition = !condition;
         result = result && condition;
         return *this;
